@@ -1,12 +1,13 @@
 package com.woof.cart.controller;
 
-import com.example.Woof_2nd.cart.model.dto.CartCreateReq;
-import com.example.Woof_2nd.cart.service.CartService;
-import com.example.demo.member.model.Member;
+
+import com.woof.cart.model.dto.CartCreateReq;
+import com.woof.cart.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/cart")
