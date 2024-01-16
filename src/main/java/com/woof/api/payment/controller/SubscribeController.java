@@ -3,6 +3,7 @@ package com.woof.api.payment.controller;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.woof.api.common.Response;
 import com.woof.api.payment.service.PaymentService;
+import com.woof.api.payment.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +14,16 @@ import java.io.IOException;
 
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/subscribe")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class PaymentController {
-    private final PaymentService paymentService;
+public class SubscribeController {
+    private final SubscribeService subscribeService;
     @RequestMapping(method = RequestMethod.GET, value = "/validate")
-    public Response validatePayment(String impUid) throws IamportResponseException, IOException {
-
+    public Response validateSubscribe(String impUid) throws IamportResponseException, IOException {
+        if(subscribeService.subscribeValidation(impUid)) {
+            return Response.success("결제 성공");
+        }
 
         return Response.error("결제 금액 이상");
     }

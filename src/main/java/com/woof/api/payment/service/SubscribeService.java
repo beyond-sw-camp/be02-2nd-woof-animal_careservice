@@ -5,7 +5,10 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.AgainPaymentData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import com.woof.api.member.model.Member;
+import com.woof.api.payment.model.Subscribe;
 import com.woof.api.payment.model.SubscribeInfo;
+import com.woof.api.payment.repository.SubscribeRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,9 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+public class SubscribeService {
     private final IamportClient iamportClient;
+    private final SubscribeRepository subscribeRepository;
 
     public void regularPayment() throws IamportResponseException, IOException {
         AgainPaymentData again_data = new AgainPaymentData("test14", new Date().toString(), BigDecimal.valueOf(1005));
@@ -25,7 +29,7 @@ public class PaymentService {
         System.out.println(payment_response.getResponse());
     }
 
-    public Boolean paymentValidation(String impUid) throws IamportResponseException, IOException {
+    public Boolean subscribeValidation(String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = iamportClient.paymentByImpUid(impUid);
 
         Integer amount = response.getResponse().getAmount().intValue();
@@ -34,6 +38,11 @@ public class PaymentService {
 
         // 구독한 사람이 가입한 타입에 맞는 가격으로 결제 되었는지 확인
         if (amount == SubscribeInfo.valueOf(subscribeType).getPrice()) {
+            subscribeRepository.save(
+                    Subscribe.builder()
+                            .member(Member.builder().idx(1L).build())
+                    .build()
+            );
             System.out.println("정상");
             return true;
         }
