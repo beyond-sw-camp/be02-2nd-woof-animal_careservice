@@ -29,18 +29,19 @@ public class SubscribeService {
         System.out.println(payment_response.getResponse());
     }
 
-    public Boolean subscribeValidation(String impUid) throws IamportResponseException, IOException {
+    public Boolean subscribeValidation(Member member, String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = iamportClient.paymentByImpUid(impUid);
 
         Integer amount = response.getResponse().getAmount().intValue();
 
-        String subscribeType = StringUtils.removeEnd(response.getResponse().getMerchantUid(), "4");
-
+        String subscribeType = StringUtils.substring(response.getResponse().getMerchantUid(), 0, -19);
+        Integer price = SubscribeInfo.valueOf(subscribeType).getPrice();
         // 구독한 사람이 가입한 타입에 맞는 가격으로 결제 되었는지 확인
-        if (amount == SubscribeInfo.valueOf(subscribeType).getPrice()) {
+        if (amount.equals(SubscribeInfo.valueOf(subscribeType).getPrice())) {
             subscribeRepository.save(
                     Subscribe.builder()
-                            .member(Member.builder().idx(1L).build())
+                            .member(member)
+                            .subscribeInfo(SubscribeInfo.valueOf(subscribeType))
                     .build()
             );
             System.out.println("정상");
