@@ -20,13 +20,13 @@ import java.util.Collections;
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String email;
     private String password;
     private String nickname;
     private String authority;
-    private Integer status;
+    private Long status;
 
 
     @Override
@@ -36,8 +36,8 @@ public class Member implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton((GrantedAuthority) () -> authority);
     }
-    @Override
-    public boolean getId() { return true;}
+
+
 
     @Override
     public String getUsername() {
