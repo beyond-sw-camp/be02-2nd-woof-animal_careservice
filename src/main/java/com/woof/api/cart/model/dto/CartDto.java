@@ -15,12 +15,19 @@ public class CartDto {
 
     Long productCeoIdx;
 
-    Integer brandIdx;
+    Long productManagerIdx;
+
+    Long memberId;
+
     @NotNull
     @Pattern(regexp = "[가-힣0-9]{2,5}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$")
-    String name;
+    String productCeoName;
+
+    @NotNull
+    @Pattern(regexp = "[가-힣0-9]{2,5}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$")
+    String productManagerName;
 
     String filename;
 
-    Long memberId;
+
 }

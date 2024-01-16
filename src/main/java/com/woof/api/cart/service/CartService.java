@@ -8,6 +8,7 @@ import com.woof.api.common.Response;
 import com.woof.api.member.model.Member;
 import com.woof.api.member.repository.MemberRepository;
 import com.woof.api.productCeo.model.ProductCeo;
+import com.woof.api.productManager.model.ProductManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +26,13 @@ public class CartService {
     private final MemberRepository memberRepository;
 
     // 즐겨찾기 추가
-    public void create(Member member, Cart cart) {
+    public void create(Member member, Cart cart, ProductManager productManager) {
 
         // CartRepository를 사용하여 새로운 Cart 엔티티를 데이터베이스에 저장
         cartRepository.save(Cart.builder()
                 .member(member)
-                .productCeo(ProductCeo.builder()
-                        .idx(cart.getIdx())
-                        .build())
+                .productManager(ProductManager.builder().idx(cart.getIdx()).build())
+                .productCeo(ProductCeo.builder().idx(cart.getIdx()).build())
                 .build());
     }
 
@@ -45,16 +45,14 @@ public class CartService {
         if (member.isPresent()) {
             List<Cart> carts = cartRepository.findAllByMember(Member.builder().id(member.get().getId()).build());
 
-            // List<Cart> carts = cartRepository.findAllByConsumer(Consumer.builder()
-            //                    .consumerIdx(consumer.get().getConsumerIdx())
-            //                    .build());
             List<CartDto> cartList = new ArrayList<>();
             for (Cart cart : carts) {
                 ProductCeo productCeo = cart.getProductCeo();
                 cartList.add(CartDto.builder()
                         .idx(cart.getIdx())
-                        .name(cart.getProductCeo().getStoreName())// 업체명
+                        .productCeoName(cart.getProductCeo().getStoreName())// 업체명
                         .filename(cart.getProductCeo().getProductCeoImages().get(0).getFilename())// 업체 사진
+                        .productManagerName(cart.getProductManager().getManagerName())// 매니저 이름
                         .build());
 
             }

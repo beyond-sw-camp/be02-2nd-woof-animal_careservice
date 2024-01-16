@@ -3,9 +3,10 @@ package com.woof.api.cart.controller;
 
 
 
-import com.woof.api.cart.model.dto.CartCreateReq;
+import com.woof.api.cart.model.Cart;
 import com.woof.api.cart.service.CartService;
 import com.woof.api.member.model.Member;
+import com.woof.api.productManager.model.ProductManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     private final CartService cartService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/in/{idx}")
-    public ResponseEntity cartIn(@AuthenticationPrincipal Member member, @PathVariable Long idx) {
+    @RequestMapping(method = RequestMethod.POST, value = "/in")
+    public ResponseEntity cartIn(@AuthenticationPrincipal Member member, Cart cart, ProductManager productManager) {
                              // Member의 UserDetails 객체에 접근가능
-        cartService.create(member, cart);
+        cartService.create(member, cart, productManager);
         return ResponseEntity.ok().body("ok");
     }
 
@@ -32,6 +33,8 @@ public class CartController {
         return ResponseEntity.ok().body(cartService.list(member.getEmail()));
     }
 
+
+    // Ceo랑 매니저 아이디 따로 해야하나?
     @RequestMapping(method = RequestMethod.DELETE, value = "/cancel/{idx}")
     public ResponseEntity remove(@AuthenticationPrincipal Member member,@PathVariable Long idx) {
         cartService.remove(idx, member);
