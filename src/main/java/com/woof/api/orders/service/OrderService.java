@@ -30,10 +30,14 @@ public class OrderService {
 
         orderRepository.save(
                 Orders.builder()
+                        .name(orderDto.getName())
+                        .phoneNumber(orderDto.getPhoneNumber())
+                        .time(orderDto.getTime())
+                        .orderDetails(orderDto.getOrderDetails())
+                        .place(orderDto.getPlace())
                         .productCeo(
                                 ProductCeo.builder()
                                         .idx(orderDto.getProductCeoIdx())
-                                        .productName(orderDto.getProductName())
                                         .build())
                         .productManager(
                                 ProductManager.builder()
@@ -43,12 +47,6 @@ public class OrderService {
                                 Member.builder()
                                         .idx(orderDto.getMemberIdx())
                                         .build())
-                        .name(orderDto.getName())
-                        .phoneNumber(orderDto.getPhoneNumber())
-                        .time(orderDto.getTime())
-                        .orderDetails(orderDto.getOrderDetails())
-                        .place(orderDto.getPlace())
-//                        .reservation_status(orderDto.getReservation_status())
                         .build());
     }
 //

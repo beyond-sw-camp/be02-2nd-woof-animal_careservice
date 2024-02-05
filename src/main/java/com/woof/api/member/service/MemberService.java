@@ -5,7 +5,6 @@ import com.woof.api.member.model.requestdto.GetEmailConfirmReq;
 import com.woof.api.member.model.requestdto.PostMemberSignupReq;
 import com.woof.api.member.model.responsedto.PostMemberSignupRes;
 import com.woof.api.member.repository.MemberRepository;
-import com.woof.api.orders.model.Orders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -104,6 +103,7 @@ public class MemberService implements UserDetailsService {
     // update
 
     // delete
+
 
 
 }
