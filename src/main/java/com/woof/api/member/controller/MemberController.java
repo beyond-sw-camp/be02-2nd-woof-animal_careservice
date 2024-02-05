@@ -12,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.persistence.ColumnResult;
 
 @RestController
 @RequiredArgsConstructor
@@ -119,5 +120,17 @@ public class MemberController {
         return "성공";
     }
 
-}
+    @GetMapping("/member/{email}")
+    public ResponseEntity read(@PathVariable String email) {
+        GetMemberReadRes response = memberService.readMember(email);
+        return ResponseEntity.ok().body(response);
+    }
 
+    @RequestMapping(method = RequestMethod.PATCH, value = "/member/update")
+    public ResponseEntity update (@RequestBody PatchMemberUpdateReq request) {
+        PatchMemberUpdateRes response = memberService.updateMember(request);
+        return ResponseEntity.ok().body(response);
+    }
+
+
+}
